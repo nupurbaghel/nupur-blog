@@ -11,7 +11,7 @@ app.secret_key="nupur"
 
 @app.route('/')
 def home_template():
-    return render_template('home.html')
+    return render_template('home.html',email=session['email'])
 
 @app.route('/login')
 def login_template():

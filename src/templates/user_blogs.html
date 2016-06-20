@@ -3,7 +3,7 @@
 <div class="container ">
     <div class="jumbotron">
     <h2>{{email}}'s blogs</h2>
-
+         Please click on the blog to add/view posts..
         {% for blog in blogs %}
             <h3><a href="/posts/{{ blog._id }}">{{ blog.title }}</a></h3>
             <p>{{ blog.description }}</p>
@@ -11,11 +11,12 @@
 
         {% endfor %}
 
-         <a href="/blogs/new/"><button class="btn btn-primary">
+         <a href="/blogs/new"><button class="btn btn-primary">
              {% if blogs|length > 0 %}
              Add another Blog
              {% else %}
              No blogs yet.. Create
+             {% endif %}
          </button></a>
 
    </div>
