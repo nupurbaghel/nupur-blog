@@ -1,11 +1,14 @@
+import datetime
 import uuid
 
+from flask import session
 from src.common.database import Database
+from src.models.blog import Blog
 
 __author__ = "Nupur Baghel"
 
 class User(object):
-    def __init__(self,email,password,_id):
+    def __init__(self,email,password,_id=None):
         self.email=email
         self.password=password
         self._id= uuid.uuid4().hex if _id is None else _id
@@ -13,7 +16,8 @@ class User(object):
     @classmethod
     def get_by_email(cls,email):
         data=Database.find_one('users',{'email':email})
-        return cls(**data)
+        if data is not None:
+            return cls(**data)
 
     @classmethod
     def get_by_id(cls,_id):
@@ -31,21 +35,40 @@ class User(object):
     @classmethod
     def register(cls,email,password):
         user =cls.get_by_email(email)
-        if user is not None:
-        new_user=cls(email,password)
-        new_user.save_to_mongo()
+        if user is None:
+            new_user=cls(email,password)
+            new_user.save_to_mongo()
+            session['email']=email
             return True
         else:
             return False
 
-    def login(self):
-        pass
+    @staticmethod
+    def login(user_email):
+        session['email']= user_email
+
+    @staticmethod
+    def logout():
+        session['email']=None
 
     def get_blogs(self):
-        pass
+        return Blog.find_by_author_id(self._id)
+
+    def new_blog(self,title,description):
+        blog=Blog(self.email,title,description,self._id)
+        blog.save_to_mongo()
+
+    @staticmethod
+    def new_post(blog_id,title,content,date=datetime.datetime.utcnow()):
+        blog= Blog.from_mongo(blog_id)
+        blog.new_post(title=title,content=content,date=date)
 
     def json(self):
-        pass
+        return {
+            'email':self.email,
+            '_id':self._id,
+            'password':self.password
+        }
 
     def save_to_mongo(self):
-        pass
+        Database.insert('users',self.json())
