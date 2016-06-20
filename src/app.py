@@ -8,11 +8,8 @@ from src.models.user import User
 app=Flask(__name__)
 app.secret_key="nupur"
 
-@app.route('/')
-def home_template():
-    return render_template('home.html')
 
-@app.route('/login')
+@app.route('/')
 def login_template():
     return render_template('login.html')
 
