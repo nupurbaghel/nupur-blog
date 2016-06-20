@@ -10,8 +10,25 @@ app.secret_key="nupur"
 
 
 @app.route('/')
+def home_template():
+    return render_template('home.html')
+
+@app.route('/login')
 def login_template():
     return render_template('login.html')
+
+@app.route('/logout')
+def logout_template():
+    User.logout()
+    return render_template('home.html')
+
+@app.route('/about')
+def about_template():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact_template():
+    return render_template('contact.html')
 
 @app.route('/register')
 def register_template():
@@ -69,6 +86,7 @@ def create_new_blog():
         description=request.form['description']
         user=User.get_by_email(session['email'])
         blog=Blog(user.email,title,description,user._id)
+        blog.save_to_mongo()
         return make_response(user_blogs(user._id))
 
 @app.route('/posts/new/<string:blog_id>',methods=['GET','POST'])

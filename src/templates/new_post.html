@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container ">
+    <div class="jumbotron">
+        <h3>Create Post</h3>
     <form id="new-post" action="/posts/new/{{ blog_id}}" method="post">
         <div class="form-group" >
             <label for="title">Title</label>
@@ -8,9 +10,11 @@
         </div>
         <div class="form-group" >
             <label for="content">Description</label>
-            <textarea type="text" id="content" class="form-control" name="content">
+            <textarea type="text" id="content" class="form-control" name="content"></textarea>
         </div>
-        <text type="submit" class="btn btn-success">Post</text>
+        <button type="submit" class="btn btn-success">Post</button>
+
     </form>
+    </div>
 </div>
 {% endblock %}
