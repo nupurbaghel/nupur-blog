@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container page-form">
+    <div class="jumbotron">
+        <h3>Register</h3>
     <form id="login-form" action="/auth/register" method="post">
         <div class="form-group" >
             <label for="email">Email</label>
@@ -12,5 +14,6 @@
         </div>
         <button type="submit" class="btn btn-success">Sign Up</button>
     </form>
+    </div>
 </div>
 {% endblock %}
