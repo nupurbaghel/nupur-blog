@@ -11,6 +11,13 @@
 
         {% endfor %}
 
+         <a href="/blogs/new/"><button class="btn btn-primary">
+             {% if blogs|length > 0 %}
+             Add another Blog
+             {% else %}
+             No blogs yet.. Create
+         </button></a>
+
    </div>
 </div>
 {% endblock %}
