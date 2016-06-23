@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Exciting Blog</title>
+    <title>Little Blog App by Nupur</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
     <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css') }}"
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 </head>
 <body>
 <!-- Static navbar -->
@@ -22,7 +23,7 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/">Home</a></li>
               <li><a href="/about">About</a></li>
               <li><a href="/contact">Contact</a></li>
              <!-- <li class="dropdown">
@@ -39,14 +40,28 @@
               </li> !-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-
+                {% if session['email'] : %}
               <li><a href="/logout">Logout</a></li>
+                {% endif %}
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
+
+
+
 {% block content %}
 
 {% endblock %}
+
+<script>
+    $("#navbar a").each(function() {
+    if (this.href == window.location.href) {
+        $(this).parent().addClass("active");
+    }
+});
+
+
+</script>
 </body>
 </html>

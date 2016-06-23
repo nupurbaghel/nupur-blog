@@ -1,6 +1,7 @@
 
-from flask import Flask, render_template, request, session, make_response
+from flask import Flask, render_template, request, session, make_response,flash
 from src.common.database import Database
+from src.common.utils import Utils
 from src.models.blog import Blog
 from src.models.post import Post
 from src.models.user import User
@@ -43,10 +44,17 @@ def login_user():
     email=request.form['email']
     password=request.form['password']
 
+    if (email is "") or (password is ""):
+        flash("Please fill email id and password")
+        return render_template('login.html')
+
     if User.login_valid(email,password):
         User.login(email)
     else:
+        flash("Invalid credentials")
         session['email']=None
+        return render_template('login.html')
+
 
     return render_template('profile.html',email=session['email'])
 
@@ -54,9 +62,20 @@ def login_user():
 def register_user():
     email=request.form['email']
     password=request.form['password']
-    User.register(email,password)
+    if (email is "") or (password is ""):
+        flash("Please fill email id and password")
+    else:
+        user_data = Database.find_one('users', {'email': email})
+        if not Utils.email_is_valid(email):
+            flash("Your email has a invalid format.")
+        elif user_data is not None:
+            flash("User email id already exists!")
+        else:
+            User.register(email,password)
+            return render_template('profile.html', email=session['email'])
 
-    return render_template('profile.html', email=session['email'])
+    return render_template('register.html')
+
 
 @app.route('/blogs/<string:user_id>')
 @app.route('/blogs')
