@@ -56,7 +56,7 @@
 
 <script>
     $("#navbar a").each(function() {
-    alert(this.href+':'+window.location.href)
+    //alert(this.href+':'+window.location.href)
     var url = window.location.href
     if (this.href == url || this.href == '/'+url) {
         $(this).parent().addClass("active");
